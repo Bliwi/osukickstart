@@ -104,11 +104,14 @@ set /P c=
 if /I "%c%" EQU "Y" goto:basic-setup
 if /I "%c%" EQU "N" goto:exit-setup
 if /I "%c%" EQU "E" goto:extras-gosum
+
 :basic-setup
 cls
-:: rename "osu!.%USER%.cfg" "osu!.%USER%-config-bkp.cfg"
-:: curl *WIP* -o "osu!.%USER%.cfg"
-:: curl *WIP* -o skins\skin.osk
+rename "osu!.%USER%.cfg" "osu!.%USER%-config-bkp.cfg"
+curl "https://raw.githubusercontent.com/Bliwi/osukickstart/main/osu!config.cfg" -o "osu!.%USER%.cfg"
+wget "https://download1336.mediafire.com/tcpusz3inxjg/fgj2rdvo8l1053d/PHEONIX+-+Kickstart+edition.osk"
+timeout 1
+start osu!.exe "PHEONIX+-+Kickstart+edition.osk"
 
 echo Installation complete
 echo I still need to figure this out.
@@ -166,6 +169,7 @@ start https://youtu.be/8t_LBQG0xdI
 goto:extras-gosum
 
 :extras-install-gosum
+cls
 mkdir gosumemory
 wget https://github.com/l3lackShark/gosumemory/releases/latest/download/gosumemory_windows_386.zip -O "gosumemory\gosumemory.zip"
 goto:extras-opentablet
@@ -188,6 +192,7 @@ if /I "%c%" EQU "Y" goto:extras-install-opentablet
 if /I "%c%" EQU "N" goto:extra-maps
 
 :extras-install-opentablet
+cls
 mkdir OpenTabletDriver
 wget https://github.com/OpenTabletDriver/OpenTabletDriver/releases/latest/download/OpenTabletDriver.win-x64.zip -O "OpenTabletDriver\Opentabletdriver.zip"
 goto:extra-maps
@@ -205,7 +210,7 @@ goto:dialog
 :extra-maps-dialog
 set /P c=
 if /I "%c%" EQU "Y" goto:extras-install-maps
-if /I "%c%" EQU "N" goto:finished
+if /I "%c%" EQU "N" goto:finished-extras
 
 :extras-install-maps
 cls
@@ -214,7 +219,7 @@ wget "https://download1079.mediafire.com/bsp9x4rpbtug/z2zlk0wknlk7zqg/1328892+Va
 wget "https://download1514.mediafire.com/33e3f4ggjzcg/r20b65mt3ympd7c/1019966+Various+Artists+-+Mizu%5C%27s+Jump+Training+%232.osz" -O "Songs\1019966 Various Artists - Mizu's Jump Training #2.osz"
 wget "https://download1487.mediafire.com/pyzjxsvp6cfg/gido2u2o036mgvf/825086+Various+Artist+-+Jump+Training+%231.osz" -O "Songs\825086 Various Artist - Jump Training #1.osz"
 wget "https://download1327.mediafire.com/0komh3s7z2lg/cm154a4fc5c3xx7/1520899+Various+Artists+-+CS-0+Jump+Training+6.osz" -O "Songs\1520899 Various Artists - CS-0 Jump Training 6.osz"
-goto:finished
+goto:finished-extras
 :failed
 echo @@@@@@@@@@@@@\@@@@@@\@@@@@@@@@@@@@@@@@/@@@@@@@/@@@@@@@@@@@@@%failed01%
 echo @@@@@@@@@@@@@@\@@@@@@\@@@@@@@@@@@@@@@/@@@@@@@/@@@@@@@@@@@@@@%failed02%
@@ -251,16 +256,19 @@ set failed06=      Are you sure you have placed
 set failed07=     the script on your osu folder?
 set failed23=          Osu! Kickstart script.
 set failed24=           Created by Bliwi.
+set failed-dialog= goto:failed-no-osu-dialog
 goto:failed
 
-
+:failed-no-osu-dialog
+pause
+goto:eof
 
 :exit-setup
 cls
 set failed02=        Osu! Kickstart installation canceld!
 set failed04=       If you are in here because of an error,
 set failed05=         please leave a comment on my video
-set failed07=                so i can help you!
+set failed06=                so i can help you!
 set failed09=      Otherwise, are you really sure you want
 set failed10=                     to cancel?
 set failed13=               [Y] Close this window.
@@ -272,5 +280,23 @@ goto:failed
 
 :exit-dialog
 set /P c=
-if /I "%c%" EQU "Y" goto:eof 
+if /I "%c%" EQU "Y" goto:eof
 if /I "%c%" EQU "N" goto:setup
+
+
+:finished-extras
+cls
+set dialog-line02=                   Installation Complete.
+set dialog-line04=   You can now close this window and enjoy your game.
+set dialog-line05=
+set dialog-line06=
+set dialog-line12=                           
+set dialog-line14=                 
+set dialog-line16= 
+set dialog-line19= [S] Please consider subscribing to my channel on youtube!
+set dialog= goto:finished-extras-dialog
+goto:dialog
+
+:finished-extras-dialog
+pause
+goto:eof
